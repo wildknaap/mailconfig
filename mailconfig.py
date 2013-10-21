@@ -11,8 +11,8 @@ import sys
 dbhost='localhost'
 dbport=3306
 dbmail='mail'
-dbuser='dbuser'
-dbpasswd='dbpassword'
+dbuser='mailmangler'
+dbpasswd='Yuupahj8ael3'
 
 
 # create a connection to the database
@@ -55,7 +55,6 @@ def list_aliases():
 		emailalias=row[0]
 		popaccount=row[1]
 		print '| %-30s | %-30s |' % (emailalias,popaccount)		
-	cursor.close()
 	print '+-----------------------------------------------------------------+'
 	print ''
 
@@ -66,7 +65,6 @@ def list_aliases():
 
 def query_add_alias():
 	cursor.execute("""insert into aliases (mail,destination) values (%s,%s); """, (emailalias,popaccount))	
-	cursor.close()	
 
 	return
 
@@ -150,6 +148,8 @@ def mainmenu():
 # execute
 
 mainmenu()
+
+cursor.close()
 
 
 # EOF
