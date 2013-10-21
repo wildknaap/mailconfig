@@ -1,1 +1,4 @@
 This script wil add/remove virtual email aliases/pop accounts to from a mysql database.
+
+- mailconfig.py: The script
+- mail.sql: The mysql table structure
