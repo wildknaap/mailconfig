@@ -11,8 +11,8 @@ import sys
 dbhost='localhost'
 dbport=3306
 dbmail='mail'
-dbuser='mailmangler'
-dbpasswd='Yuupahj8ael3'
+dbuser='dbuser'
+dbpasswd='dbpasswd'
 
 
 # create a connection to the database
