@@ -63,6 +63,33 @@ def list_aliases():
 	return	
 
 
+def query_list_popbox():
+	cursor.execute("""select name, maildir from users;""")
+	
+	return
+
+
+def list_popbox():
+	query_list_popbox()
+	listpopboxes=cursor.fetchall()
+        print ''
+        print '+-----------------------------------------------------------------+'
+        def1='POP account'
+        def2='Mail directory'
+        print '| %-30s | %-30s |' % (def1,def2)
+        print '+-----------------------------------------------------------------+'
+        for row in listpopboxes:
+                popbox=row[0]
+                maildir=row[1]
+                print '| %-30s | %-30s |' % (popbox,maildir)
+        print '+-----------------------------------------------------------------+'
+        print ''
+
+        mainmenu()	
+
+	return
+
+
 def query_add_alias():
 	cursor.execute("""insert into aliases (mail,destination) values (%s,%s); """, (emailalias,popaccount))	
 
@@ -94,7 +121,7 @@ def add_alias():
 def query_remove_alias():
 	cursor.execute("""delete from aliases where mail = %s; """, (emailalias))
 
-	print 'Removed alias emailalias'	
+	print 'Removed alias '+emailalias+''	
 
 	return
 
@@ -119,10 +146,64 @@ def remove_alias():
 	return
 
 
-#def popbox_add():
+def query_add_popbox():
+	cursor.execute("""insert into users (id,name,maildir,crypt) values (%s,%s,%s,encrypt(%s));""", (id,name,maildir,password))
+
+	return
 
 
-#def popbox_remove():
+def add_popbox():
+	global id
+	global name
+	global maildir
+	global password
+	print ''
+	print 'Add a POP account'
+	print '-------------------------------------------------------------'
+	print ''
+	name = raw_input('POP account to add: ')
+	password = raw_input('Password: ')
+	maildir = ''+name+'/'
+	id = name
+	print ''
+	correctyesno = raw_input('POP account '+name+' correct? [y/n]')
+	if 'y' in correctyesno: query_add_popbox() 
+	elif 'n' in correctyesno: print 'Goodbye and thank you!'
+	else:
+		error()
+	print ''
+	
+	mainmenu()		
+
+	return
+	
+
+def query_remove_popbox():
+	cursor.execute("""delete from users where name = %s;""", (popbox))
+
+	print 'Removed POP account '+popbox+''
+	
+	return 	
+
+
+def remove_popbox():
+	global popbox
+        print ''
+        print 'Remove a POP account'
+        print '-------------------------------------------------------------'
+        print ''
+        popbox = raw_input('POP account to remove: ')
+        print ''
+        removeyesno = raw_input('Are you sure to remove '+popbox+' : [y/n]')
+        if 'y' in removeyesno: query_remove_popbox()
+        elif 'n' in removeyesno: print 'Good choice!'
+        else:
+                error()
+        print ''
+
+        mainmenu()
+
+        return	
 
 
 def mainmenu():
@@ -132,14 +213,20 @@ def mainmenu():
 	print '1. List all email aliases'
 	print '2. Add an email alias'
 	print '3. Remove an email alias'
-	print '4. Exit'
+	print '4. List all pop boxes'
+	print '5. Add a POP account'
+	print '6. Remove a POP account'
+	print '7. Exit'
 	print ''
 	selection = raw_input('   Select a number: ')
 	print ''
 	if '1' in selection: list_aliases()
 	elif '2' in selection: add_alias()
 	elif '3' in selection: remove_alias()
-	elif '4' in selection: exit()
+	elif '4' in selection: list_popbox()
+	elif '5' in selection: add_popbox()
+	elif '6' in selection: remove_popbox()
+	elif '7' in selection: exit()
 	else:
 		error()
 	return
